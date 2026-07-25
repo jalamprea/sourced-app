@@ -11,8 +11,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['apple-touch-icon.png'],
       manifest: {
-        name: 'Coach — entrenado con expertos reales',
-        short_name: 'Coach',
+        name: 'Sourced — entrenado con expertos reales',
+        short_name: 'Sourced',
         description:
           'Creá un coach experto entrenado con transcripciones de especialistas en YouTube. Cada respuesta cita la fuente y el minuto exacto.',
         lang: 'es',

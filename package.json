@@ -1,5 +1,5 @@
 {
-  "name": "coachtube",
+  "name": "sourced",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@11.15.1",
@@ -12,6 +12,7 @@
     "db:down": "docker compose down",
     "db:reset": "docker compose down -v && docker compose up -d",
     "db:migrate": "./scripts/migrate.sh",
+    "db:migrate:remote": "./scripts/migrate.sh --remote",
     "db:psql": "docker compose exec db psql -U coach -d coach",
     "ingest": "pnpm --filter api ingest",
     "demo:reset": "pnpm --filter api demo:reset"

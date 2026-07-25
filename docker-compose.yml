@@ -1,7 +1,7 @@
 services:
   db:
     image: pgvector/pgvector:pg16
-    container_name: coachtube-db
+    container_name: sourced-db
     restart: unless-stopped
     environment:
       POSTGRES_USER: coach

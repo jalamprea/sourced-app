@@ -40,6 +40,25 @@ pnpm --filter web typecheck
 
 There is no lint step and no build step for the API (`tsx` runs TypeScript directly).
 
+## Deploy
+
+Render, declared in `render.yaml`. The ordered runbook — and the reasons the order matters —
+is `docs/deploy.md`. Three services: `sourced-api` (Node web service, **starter** plan
+because a free service sleeps after 15 min and takes ~1 min to wake), `sourced-web` (static
+site), `sourced-db` (Postgres 16 + pgvector, `create extension vector` works as-is).
+
+- **The API cannot go serverless.** The detached clone in `routes/coaches.ts` and the
+  `reply.hijack()` SSE write in `routes/messages.ts` both need the process to outlive the
+  response.
+- **`VITE_API_URL` is inlined at build time** and read in exactly one place,
+  `web/src/config.ts`. Empty in dev so every request stays relative and uses the Vite proxy;
+  changing it in production requires a rebuild, not a restart.
+- **`--prod=false` in the Render build commands is load-bearing** — `tsx`, `typescript` and
+  `vite` are devDependencies, and a `NODE_ENV=production` install would skip them.
+- `pnpm db:migrate:remote` applies the same migrations over `DATABASE_URL` instead of the
+  docker container. Re-ingesting against a fresh database makes zero YouTube calls thanks to
+  `.cache/yt/` — it only re-embeds, which is cheaper than moving `vector` columns by hand.
+
 ## Architecture
 
 Single Fastify service + Vite/React SPA + Postgres/pgvector, in a pnpm workspace.

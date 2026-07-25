@@ -1,0 +1,78 @@
+# Render blueprint — https://render.com/docs/blueprint-spec
+#
+# Three services: the Fastify API as a long-lived Node process, the built SPA as a
+# static site, and Postgres with pgvector. The runbook that goes with this file, in the
+# order the steps must happen, is docs/deploy.md — read it before applying the blueprint.
+#
+# Why the API is a real process and not a serverless function: routes/coaches.ts fires
+# the corpus clone detached from the request, and routes/messages.ts writes SSE straight
+# to the socket after reply.hijack(). Both need the process to outlive the response.
+
+services:
+  - type: web
+    name: sourced-api
+    runtime: node
+    # NOT free. A free web service sleeps after 15 minutes of inactivity and takes about
+    # a minute to wake up — that minute would land in the middle of the demo.
+    plan: starter
+    region: ohio
+    # Deploys are manual on purpose: on demo day a pushed README fix must not restart the
+    # API. Deploy from the dashboard ("Manual Deploy") when you actually mean it.
+    autoDeployTrigger: off
+    # --prod=false is load-bearing: tsx, typescript and vite live in devDependencies, and
+    # a NODE_ENV=production install would skip them and break both the start command and
+    # the web build. Node version comes from .nvmrc (22.20.0).
+    buildCommand: corepack enable && pnpm install --frozen-lockfile --prod=false
+    startCommand: pnpm --filter api start
+    healthCheckPath: /health
+    envVars:
+      # Internal connection string — same region as the database, so no public hop.
+      - key: DATABASE_URL
+        fromDatabase:
+          name: sourced-db
+          property: connectionString
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+
+  - type: web
+    name: sourced-web
+    runtime: static
+    autoDeployTrigger: off
+    buildCommand: corepack enable && pnpm install --frozen-lockfile --prod=false && pnpm --filter web build
+    staticPublishPath: apps/web/dist
+    envVars:
+      # Vite inlines this at BUILD time. Changing it requires a rebuild, not a restart.
+      # Must point at the API origin, and the API domain must already resolve before the
+      # build that bakes it in — see docs/deploy.md.
+      - key: VITE_API_URL
+        value: https://api.trysourced.co
+    routes:
+      # Single-page app: every path resolves to the shell.
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    headers:
+      # vite-plugin-pwa runs in autoUpdate mode. If the service worker itself gets cached
+      # by the CDN, a stale frontend stays pinned to the old API origin and a plain reload
+      # will not fix it. If the blueprint validator rejects this block, delete it and add
+      # the same rule from the dashboard — it is a safety net, not a requirement.
+      - path: /sw.js
+        name: Cache-Control
+        value: no-cache, no-store, must-revalidate
+
+databases:
+  - name: sourced-db
+    # Free Postgres expires 30 days after creation (14 more days to rescue it by
+    # upgrading, then it is deleted with the corpus inside). Enough for the judging
+    # window. Switch to basic-256mb to keep it alive.
+    plan: free
+    region: ohio
+    # Matches the local pgvector/pgvector:pg16 image, so migrations behave identically.
+    postgresMajorVersion: "16"
+    ipAllowList:
+      # Needed to run migrations and load the corpus from outside Render. Tighten this to
+      # your own IP — or empty it — once the 296 chunks are in.
+      - source: 0.0.0.0/0
+        description: laptop access for migrations and ingest
