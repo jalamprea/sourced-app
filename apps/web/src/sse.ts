@@ -1,4 +1,5 @@
 import type { ChatEvent } from '@coach/shared';
+import { apiUrl } from './config.ts';
 
 /**
  * SSE reader built on fetch.
@@ -56,7 +57,7 @@ export async function openChatStream(
   mode: 'coach' | 'generic',
   signal: AbortSignal,
 ): Promise<Response> {
-  const response = await fetch(`/api/coaches/${coachId}/messages`, {
+  const response = await fetch(apiUrl(`/api/coaches/${coachId}/messages`), {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ content, mode }),
