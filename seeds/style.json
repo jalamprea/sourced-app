@@ -1,0 +1,121 @@
+{
+  "domain": "style",
+  "_note": "Spanish captions verified with yt-dlp before committing. The ingest CLI reads only `url`; the other fields are for human review. `overflow` holds verified spares — promote into `sources` if retrieval feels thin and Phase 1 has time left.",
+  "_transcriptMinutes": 139,
+  "sources": [
+    {
+      "url": "https://www.youtube.com/watch?v=kaolIVMobXI",
+      "title": "CÓMO VESTIR BIEN CON POCO DINERO / TIPS Y TRUCOS PARA MEJORAR NUESTRA IMAGEN (tu asesora de moda)",
+      "channel": "Chincha Rabiña",
+      "durationSeconds": 1071,
+      "captions": "manual"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=RwDwMNkNJ-U",
+      "title": "Cómo ser ELEGANTE en 10 PASOS  (Tu Asesora de Imagen y Moda)",
+      "channel": "Chincha Rabiña",
+      "durationSeconds": 1111,
+      "captions": "manual"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=478jLIm1hyc",
+      "title": "CÓMO MEDIRTE PARA SABER TU TIPO DE CUERPO | Desiree Lowry",
+      "channel": "Desiree Lowry",
+      "durationSeconds": 541,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=bdZXV1QJSHE",
+      "title": "TIPS PARA VESTIR: CUERPO RECTANGULAR/RECTÁNGULO (DEFINIR CINTURA)",
+      "channel": "Marcela GS",
+      "durationSeconds": 672,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=tYFCBJ-gP4g",
+      "title": "6 claves para encontrar tu estilo propio",
+      "channel": "Marta Salerno",
+      "durationSeconds": 867,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=ItVWPfOnDHM",
+      "title": "5 HÁBITOS PARA VESTIR MEJOR (Hazlo todos los días) / Asesora de imagen",
+      "channel": "Andrea Dutrús - Asesora de Imagen",
+      "durationSeconds": 735,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=tnJwolH2oq0",
+      "title": "Cómo vestir ELEGANTE y PODEROSA  | Asesora de imagen experta",
+      "channel": "Agus Pedano",
+      "durationSeconds": 707,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=AF0sWLrMNr8",
+      "title": "¿Quieres una imagen exitosa? Prueba estos consejos",
+      "channel": "Imagen Excellence",
+      "durationSeconds": 1355,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=M2nYiKXPxd0",
+      "title": "Cómo Vestir BIEN Con Poco Dinero | GUÍA DEFINITIVA",
+      "channel": "Misaglez Lifestyle",
+      "durationSeconds": 719,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=BINLXKGwR9M",
+      "title": "ESTA ES LA CLAVE PARA VESTIR BIEN / Asesora de imagen personal",
+      "channel": "Andrea Dutrús - Asesora de Imagen",
+      "durationSeconds": 533,
+      "captions": "auto"
+    }
+  ],
+  "overflow": [
+    {
+      "url": "https://www.youtube.com/watch?v=PyUOIC82hW8",
+      "title": "CÓMO SER ESTILOSA SIN ESFUERZO (Tu asesora de imagen y moda)",
+      "channel": "Chincha Rabiña",
+      "durationSeconds": 1693,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=GwYFvUJ8eAs",
+      "title": "FÍJATE en lo que hacen ellas para VESTIR MEJOR! LAS QUE MÁS SABEN DE MODA  / Tu Asesora de Imagen",
+      "channel": "Chincha Rabiña",
+      "durationSeconds": 1194,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=2LUXJ0oDwLg",
+      "title": "GUÍA DEFINITIVA PARA VESTIR ESTILOSA GRATIS Y SIN ESFUERZO / Asesora de imagen personal",
+      "channel": "Andrea Dutrús - Asesora de Imagen",
+      "durationSeconds": 482,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=K2sthF629LM",
+      "title": "Aprende a ser TU MEJOR ASESORA DE IMAGEN /cómo MEDIRTE para identificar tu TIPO DE CUERPO #CLASE 2",
+      "channel": "Chincha Rabiña",
+      "durationSeconds": 1186,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=00aG6xZdXT4",
+      "title": "💫TIPOS DE CUERPOS y como sacarles partido✨ Asesoría de imagen",
+      "channel": "Meanwhile",
+      "durationSeconds": 380,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=kt85Rmr286o",
+      "title": "Identifica tu Tipo de Cuerpo y Aprende a Vestir Según tu Silueta. Guía completa de estilo personal 👗",
+      "channel": "Anais Santos ",
+      "durationSeconds": 336,
+      "captions": "auto"
+    }
+  ]
+}

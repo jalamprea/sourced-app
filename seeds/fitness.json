@@ -1,0 +1,135 @@
+{
+  "domain": "fitness",
+  "_note": "Spanish captions verified with yt-dlp before committing. The ingest CLI reads only `url`; the other fields are for human review. `overflow` holds verified spares — promote into `sources` if retrieval feels thin and Phase 1 has time left.",
+  "_transcriptMinutes": 172,
+  "sources": [
+    {
+      "url": "https://www.youtube.com/watch?v=0VO7NTsGX_8",
+      "title": "Cómo crear la RUTINA de ENTRENAMIENTO Perfecta (en 2025)",
+      "channel": "The Saiyan Kiwi",
+      "durationSeconds": 1338,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=cprwLHth50c",
+      "title": "Cómo PLANIFICAR un ENTRENAMIENTO para GANAR MASA MUSCULAR",
+      "channel": "Fit Generation",
+      "durationSeconds": 631,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=WTMfkJ7eWyI",
+      "title": "¿CUÁL ES LA MEJOR RUTINA PARA GANAR MÚSCULO? Según la ciencia",
+      "channel": "Fit Generation",
+      "durationSeconds": 705,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=KXnOryN4ENc",
+      "title": "CÓMO ORGANIZAR TU RUTINA DE ENTRENAMIENTO PARA GANAR MÚSCULO",
+      "channel": "Andres Vazquez Personal Trainer",
+      "durationSeconds": 784,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=UN5cKgCve6o",
+      "title": "Cómo aumentar masa muscular como un profesional usando la ciencia",
+      "channel": "Jeff Nippard Español",
+      "durationSeconds": 841,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=DGmYCcmTWqY",
+      "title": "Más Volumen de Entrenamiento = Más Músculo",
+      "channel": "DR LA ROSA",
+      "durationSeconds": 1212,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=fx8OcvUQESw",
+      "title": "Esto es lo que Hace Crecer tu Músculo (según la ciencia)",
+      "channel": "Alex (según la ciencia)",
+      "durationSeconds": 1352,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=FTB-YS3_MX8",
+      "title": "BIOMECÁNICA para PRINCIPIANTES | Analizando las ELEVACIONES LATERALES",
+      "channel": "Trainologym",
+      "durationSeconds": 589,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=eQMVJNktj_Q",
+      "title": "Guía Para Perder Grasa y Ganar Músculo - Recomposición Corporal",
+      "channel": "DR LA ROSA",
+      "durationSeconds": 1670,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=rOSBZm5f7B0",
+      "title": "5 Pasos Para PERDER PESO Y QUEMAR GRASA | No Cuentes Más Calorías",
+      "channel": "Dr. Carlos Jaramillo",
+      "durationSeconds": 639,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=hNs2hy0jjM4",
+      "title": "La MEJOR DIETA según la CIENCIA para PERDER GRASA (todo lo que como en un día de definición)",
+      "channel": "BejaranoFit",
+      "durationSeconds": 537,
+      "captions": "auto"
+    }
+  ],
+  "overflow": [
+    {
+      "url": "https://www.youtube.com/watch?v=WuzTGQp-AOo",
+      "title": "Cómo Ganar MASA MUSCULAR y FUERZA a la Vez",
+      "channel": "DR LA ROSA",
+      "durationSeconds": 576,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=7NmiKpvPvt8",
+      "title": "La Rutina PERFECTA de 5 Días para Ganar Músculo",
+      "channel": "Andres Vazquez Personal Trainer",
+      "durationSeconds": 315,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=-JKMtnguW5s",
+      "title": "7 CLAVES para Ganar Músculo MÁS RÁPIDO (basado en ciencia)",
+      "channel": "Fit Generation",
+      "durationSeconds": 662,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=xP4iItH8HBU",
+      "title": "Semana COMPLETA de rutinas - Entrena todo el cuerpo!",
+      "channel": "Gym Topz",
+      "durationSeconds": 1100,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=nXidfXJ5FmM",
+      "title": "La RUTINA DE EJERCICIOS IDEAL",
+      "channel": "DR LA ROSA",
+      "durationSeconds": 1082,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=YfmZdQVIsLo",
+      "title": "Cómo Ganar Masa Muscular de Forma Natural (según la ciencia)",
+      "channel": "Tengo un Plan",
+      "durationSeconds": 591,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=pQWup4tZu2M",
+      "title": "Mi Extraño Proceso para Ganar Músculo (según la ciencia)",
+      "channel": "Alex (según la ciencia)",
+      "durationSeconds": 1168,
+      "captions": "auto"
+    }
+  ]
+}

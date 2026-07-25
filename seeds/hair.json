@@ -1,0 +1,142 @@
+{
+  "domain": "hair",
+  "_note": "Spanish captions verified with yt-dlp before committing. The ingest CLI reads only `url`; the other fields are for human review. `overflow` holds verified spares — promote into `sources` if retrieval feels thin and Phase 1 has time left.",
+  "_transcriptMinutes": 198,
+  "sources": [
+    {
+      "url": "https://www.youtube.com/watch?v=eE_RLnMozIU",
+      "title": "Como ARMAR tu RUTINA PARA EL PELO - GUIA PASO a PASO - Shampoo, acondicionador, serum y más",
+      "channel": "Simon Scarano Dermatologo",
+      "durationSeconds": 1206,
+      "captions": "manual"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=x08KtWq-ffs",
+      "title": "CONSEJOS para UN CABELLO, FUERTE, BRILLANTE Y SUAVE - Guía PASO A PASO",
+      "channel": "Simon Scarano Dermatologo",
+      "durationSeconds": 1147,
+      "captions": "manual"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=dQS_lAm7mc8",
+      "title": "Cómo RECUPERAR tu CABELLO dañado🎀| Rutina completa paso a paso 🧴🧼🫧",
+      "channel": "Martina Turpin",
+      "durationSeconds": 1206,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=g7jWtKXOe2U",
+      "title": "Cómo CUIDAR el CABELLO RIZADO 👨🏾‍🦱👩🏼‍🦱 | Paso a Paso ✨",
+      "channel": "Nerva Rizos",
+      "durationSeconds": 669,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=GAefKCXsI2w",
+      "title": "Mi rutina curly *pelo ondulado* lavado, productos & tips para un pelo sano | Recupera tus rizos 💗✨",
+      "channel": "Paula Parra",
+      "durationSeconds": 1080,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=0KxQP0PvZY4",
+      "title": "Mi Rutina de Cabello: quita frizz del cabello, productos baratos, como lo peino + Tips ft Yesstyle🧴🫧",
+      "channel": "I am Stefany",
+      "durationSeconds": 792,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=E7n9BupjivY",
+      "title": "✨ ¡Rizos sanos y hermosos con la rutina MÁS FÁCIL (solo 4 pasos)! ✨",
+      "channel": "Adriana Lumina",
+      "durationSeconds": 769,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=6lZIrhnHNjI",
+      "title": "Rutina de pelo para tenerlo largo, sano, brillante y fuerte🧚🏼‍♀️ {Rutina y productos}",
+      "channel": "Ariadnalato",
+      "durationSeconds": 819,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=hMsGsVrD2bo",
+      "title": "Por qué Perdemos Pelo y Cómo Frenarlo",
+      "channel": "DR LA ROSA",
+      "durationSeconds": 1657,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=vyZh81Scsrw",
+      "title": "9 RAZONES POR LAS CUALES SE TE CAE EL PELO y como SOLUCIONARLAS - Simon Scarano Dermatologo",
+      "channel": "Simon Scarano Dermatologo",
+      "durationSeconds": 1152,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=_UcvfmKhhXI",
+      "title": "Dermatóloga explica las CAUSAS de PÉRDIDA DE PELO en MUJERES  👠",
+      "channel": "Dra. Gloria Abad",
+      "durationSeconds": 597,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=hK9JIlnEpwg",
+      "title": "Dermatólogo te cuenta 5 consejos sobre minoxidil",
+      "channel": "Escuela de Alopecia·Dr Oscar Muñoz Moreno-Arrones",
+      "durationSeconds": 792,
+      "captions": "auto"
+    }
+  ],
+  "overflow": [
+    {
+      "url": "https://www.youtube.com/watch?v=YV97vKMzJtQ",
+      "title": "ESTA es la CAUSA de CAÍDA DE PELO MÁS FRECUENTE - ¡Aprende a corregirla! - Alopecia Androgenica",
+      "channel": "Simon Scarano Dermatologo",
+      "durationSeconds": 704,
+      "captions": "manual"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=7wRQzo3JNeo",
+      "title": "5 COSAS que TE HARÁN CRECER EL PELO desde CASA",
+      "channel": "Simon Scarano Dermatologo",
+      "durationSeconds": 961,
+      "captions": "manual"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=7u225dE1P7Y",
+      "title": "5 SECRETOS para VENCER la CALVICIE EN 92 DÍAS.",
+      "channel": "Dr. Carlos Jaramillo",
+      "durationSeconds": 1322,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=uNLQCl96m_A",
+      "title": "Una Guía Simple para Frenar Tu CAÍDA de Cabello",
+      "channel": "DR LA ROSA",
+      "durationSeconds": 665,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=vTkHhBAJLJk",
+      "title": "Porqué Se Cae El Cabello? - Causas Y Soluciones Para La Pérdida De Cabello",
+      "channel": "Dr. Agustin Landivar",
+      "durationSeconds": 558,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=B39J__ypOU8",
+      "title": "Dermatóloga explica: 🤔¿POR QUÉ SE  CAE EL PELO?  FALSAS CREENCIAS sobre la CAÍDA DE CABELLO🤭",
+      "channel": "Dra. Gloria Abad",
+      "durationSeconds": 445,
+      "captions": "auto"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=aCymM1tXDMc",
+      "title": "Dermatólogo aclara mitos y realidades sobre la caída del pelo. Parte I",
+      "channel": "Dr. Angulo Dermatólogo",
+      "durationSeconds": 336,
+      "captions": "auto"
+    }
+  ]
+}
