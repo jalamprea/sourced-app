@@ -58,7 +58,16 @@ export async function messageRoutes(app: FastifyInstance): Promise<void> {
       // From here on the response is raw SSE; Fastify must not touch it.
       reply.hijack();
       const res = reply.raw;
-      res.writeHead(200, SSE_HEADERS);
+      // CORS has to be repeated by hand here. @fastify/cors stages its headers on the
+      // reply object and they are only flushed when Fastify sends the response — which
+      // hijack() skips by writing straight to the socket. Without this the browser gets
+      // a 200 with no allow-origin and rejects it as "Failed to fetch", while curl and
+      // the same-origin Vite dev proxy never notice.
+      res.writeHead(200, {
+        ...SSE_HEADERS,
+        'access-control-allow-origin': request.headers.origin ?? '*',
+        vary: 'Origin',
+      });
 
       const send = (event: string, data: unknown) => {
         res.write(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`);
