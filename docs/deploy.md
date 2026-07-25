@@ -114,19 +114,73 @@ straight in the chat with a trained coach, skipping onboarding if the clock runs
 It also prints the rehearsed questions per domain. Templates and their corpus are never
 touched, so this is safe to re-run between dry runs.
 
+**But it regenerates the golden coach ids every time**, which invalidates any
+`?coach=<id>` link already written on the card. Once those links exist, `demo:reset` stops
+being free. `scripts/seed-ratings.sql` is the half you can still run — it seeds the same
+rating rows without touching `coaches`:
+
+```bash
+docker run --rm -i postgres:16 psql "$DATABASE_URL" -v ON_ERROR_STOP=1 < scripts/seed-ratings.sql
+```
+
+No local `psql` needed — same throwaway-container trick `migrate.sh` uses in remote mode.
+
 ### 7 — Tighten the allow list
 
 `render.yaml` opens the database to `0.0.0.0/0` so the ingest can run from your laptop.
 Narrow it once the corpus is loaded.
 
+## Redeploying later
+
+`autoDeployTrigger: off` on both services, so a push deploys nothing. Deploy on purpose,
+and deploy only what changed:
+
+```bash
+git diff --name-only <deployed-sha>..HEAD | grep -E '^(apps/api|packages/shared)/'
+```
+
+Empty output means the API does not need to be touched — its running code would be
+byte-identical after a redeploy, and restarting it is not free (see below). `packages/shared`
+counts for both services, since each compiles it from source.
+
+### Why a redeploy shows up as "Failed to fetch"
+
+Render replaces the instance on every deploy and keeps the old one serving for **~60
+seconds** before sending it `SIGTERM` — measured consistently across five deploys on
+2026-07-25. That overlap covers short requests like `/api/domains`. **It does not cover an
+SSE chat stream.**
+
+When the old instance is signalled, `server.ts` runs `app.close()`, but a response taken
+over with `reply.hijack()` is invisible to Fastify, so nothing waits for it. `pool.end()`
+then closes the pool under any in-flight handler and `process.exit(0)` ends the process
+immediately. An answer streaming on that instance is severed mid-token, and the browser
+raises `TypeError: Failed to fetch` — a transport failure, not an HTTP error, which is why
+**no 4xx or 5xx ever appears in the logs** for these.
+
+How to tell this apart from real instability, in order:
+
+1. `get_metrics` for `memory_usage` / `cpu_usage` — if memory is flat and CPU idle, it is not
+   saturation. Measured healthy: ~200 MB of a 512 MiB limit, CPU 0.002 of 0.5.
+2. Request logs filtered to `4..`/`5..` — silence means the API rejected nothing.
+3. `active_connections` on the database — measured 1–2, nowhere near any limit.
+4. Correlate every instance id change against `list_deploys`. If each one has a deploy
+   behind it, there is no mystery: the deploys *are* the outages.
+
+The fix is operational, not code: **do not deploy while anyone is using the site.** Making
+the shutdown drain open SSE streams is the real repair and is deliberately not done here —
+it is surgery on the demo's critical path for a failure that only fires during a deploy.
+
 ## Demo-day checklist
 
 - **Warm the API.** Starter does not sleep, but the first request after a deploy still pays
   a cold start. Hit `https://api.trysourced.co/health` before you walk up.
-- **Re-measure time-to-first-token from the venue network.** The 746 ms / 2.15 s in
-  `docs/tasks.md` were measured against localhost. Deployed, every request pays
-  Bogotá→Ohio round trips plus the Anthropic call. Know the real number before the demo
-  tells you.
+- **Time to first frame, measured against production on 2026-07-25:** citations at
+  **505–589 ms**, first token at **1.29–1.54 s**, full answer at 7.7–10 s. That is
+  *faster* than the 746 ms / 2.15 s measured against localhost, which contradicts the
+  obvious prediction. The reason: the API in Ohio sits far closer to the OpenAI and
+  Anthropic endpoints than a laptop in Bogotá, and those two calls dominate. Moving them
+  into the datacenter buys more than the browser→Ohio hop costs. Re-check from the venue
+  network anyway — that client hop is the only part that changes with your location.
 - **Verify in a fresh private window.** The PWA service worker runs in `autoUpdate` mode
   and pins old assets; your own browser is the least trustworthy test.
 - **Write the `.onrender.com` URLs on the card** as a fallback if the domain or cert
@@ -154,3 +208,7 @@ Narrow it once the corpus is loaded.
 - **`demo:reset` connects with whatever `DATABASE_URL` is in scope.** Run against production
   it deletes every non-template coach there. Templates and the corpus survive, but any live
   conversation does not — do not run it while someone is using the URL.
+- **Shutdown does not drain SSE streams.** `SIGTERM` severs any answer mid-stream, because
+  hijacked responses are invisible to `app.close()` and `process.exit(0)` follows
+  immediately. Documented under "Why a redeploy shows up as Failed to fetch" above. Left as
+  is on purpose: it only fires during a deploy, and the operational rule already covers it.
