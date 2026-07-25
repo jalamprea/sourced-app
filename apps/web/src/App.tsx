@@ -14,6 +14,8 @@ import { ProfileQuestions } from './screens/ProfileQuestions.tsx';
 import { Training } from './screens/Training.tsx';
 import { Chat } from './screens/Chat.tsx';
 import { Compare } from './screens/Compare.tsx';
+import { About } from './screens/About.tsx';
+import { useRoute } from './router.ts';
 
 type Screen =
   | { name: 'boot' }
@@ -26,6 +28,7 @@ export default function App() {
   const [domains, setDomains] = useState<DomainSummary[]>([]);
   const [screen, setScreen] = useState<Screen>({ name: 'boot' });
   const [view, setView] = useState<'chat' | 'compare'>('chat');
+  const [path, navigate] = useRoute();
   const [error, setError] = useState<string | null>(null);
 
   /** Open a coach that already exists, or fall back to the picker if it is gone. */
@@ -117,6 +120,10 @@ export default function App() {
     setScreen({ name: 'picker' });
   }, []);
 
+  if (path === '/acerca-de') {
+    return <About onBack={() => navigate('/')} />;
+  }
+
   if (error) {
     return (
       <main className="flex h-full items-center justify-center px-6">
@@ -146,7 +153,13 @@ export default function App() {
       );
 
     case 'picker':
-      return <DomainPicker domains={domains} onPick={(d) => void handlePick(d)} />;
+      return (
+        <DomainPicker
+          domains={domains}
+          onPick={(d) => void handlePick(d)}
+          onAbout={() => navigate('/acerca-de')}
+        />
+      );
 
     case 'questions':
       return (
