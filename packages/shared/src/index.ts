@@ -16,6 +16,11 @@ export interface ProfileQuestion {
   options: string[];
 }
 
+export interface CoachRequest {
+  topic: string;
+  count: number;
+}
+
 export interface Rating {
   /** Mean stars, rounded to one decimal. 0 when nobody has rated yet. */
   average: number;

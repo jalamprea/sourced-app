@@ -5,12 +5,14 @@ import { env } from './env.ts';
 import { isDbReachable, pool } from './db.ts';
 import { coachRoutes } from './routes/coaches.ts';
 import { messageRoutes } from './routes/messages.ts';
+import { requestRoutes } from './routes/requests.ts';
 
 const app = Fastify({ logger: { transport: { target: 'pino-pretty' } } });
 
 await app.register(cors, { origin: true });
 await app.register(coachRoutes);
 await app.register(messageRoutes);
+await app.register(requestRoutes);
 
 app.get(
   '/health',

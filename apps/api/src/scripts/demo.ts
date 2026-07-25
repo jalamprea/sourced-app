@@ -85,6 +85,11 @@ try {
   console.log('\ncalificaciones sembradas (demo):');
   for (const s of scores) console.log(`  ${s.domain.padEnd(8)} ${s.avg} ★  (${s.n})`);
 
+  // Deliberately NOT seeded: the "most requested" list is meant to fill up live on
+  // stage, which is both a stronger moment and one less piece of demo data to explain.
+  const { rowCount: clearedRequests } = await pool.query('delete from coach_requests');
+  console.log(`\npedidos de coach borrados: ${clearedRequests ?? 0} (la lista arranca vacía)`);
+
   console.log('\npreguntas ensayadas por dominio:\n');
   for (const domain of DOMAINS) {
     console.log(`  ${domain.name}`);

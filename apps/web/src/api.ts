@@ -1,4 +1,4 @@
-import type { ChatMessage, Coach, DomainSummary } from '@coach/shared';
+import type { ChatMessage, Coach, CoachRequest, DomainSummary } from '@coach/shared';
 import { apiUrl } from './config.ts';
 
 async function json<T>(path: string, init?: RequestInit): Promise<T> {
@@ -18,6 +18,14 @@ export const listDomains = () => json<DomainSummary[]>('/api/domains');
 export const getCoach = (id: string) => json<Coach>(`/api/coaches/${id}`);
 
 export const getMessages = (id: string) => json<ChatMessage[]>(`/api/coaches/${id}/messages`);
+
+export const listRequests = () => json<CoachRequest[]>('/api/requests');
+
+export const requestCoach = (topic: string) =>
+  json<CoachRequest[]>('/api/requests', {
+    method: 'POST',
+    body: JSON.stringify({ topic }),
+  });
 
 export const rateCoach = (id: string, stars: number) =>
   json<{ ok: boolean }>(`/api/coaches/${id}/rating`, {

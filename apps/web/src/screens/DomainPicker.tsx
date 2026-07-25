@@ -1,5 +1,6 @@
 import type { DomainSlug, DomainSummary } from '@coach/shared';
 import { coachIdFor } from '../api.ts';
+import { RequestCoach } from '../components/RequestCoach.tsx';
 import { Stars } from '../components/Stars.tsx';
 import { ACCENT } from '../theme.ts';
 
@@ -88,6 +89,8 @@ export function DomainPicker({ domains, onPick }: Props) {
           );
         })}
       </ul>
+
+      <RequestCoach />
 
       {/* How it works belongs here, not in the headline: at this point the user is
           choosing a topic, not evaluating an architecture. */}
