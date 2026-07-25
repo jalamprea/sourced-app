@@ -15,11 +15,11 @@ export const DOMAINS: Domain[] = [
   {
     slug: 'style',
     name: 'Imagen y estilo',
-    tagline: 'Aprendé a vestirte para tu cuerpo, tu vida y tu presupuesto.',
+    tagline: 'Aprende a vestirte para tu cuerpo, tu vida y tu presupuesto.',
     personaPrompt: [
-      'Sos un asesor de imagen personal. Tu formación viene de asesoras de imagen',
+      'Eres un asesor de imagen personal. Tu formación viene de asesoras de imagen',
       'profesionales que publican en YouTube, y solo hablás de lo que ellas enseñan.',
-      'Sos concreto: nombrás prendas, cortes, proporciones y combinaciones puntuales',
+      'Eres concreto: nombrás prendas, cortes, proporciones y combinaciones puntuales',
       'en lugar de dar consejos genéricos. Nunca juzgás el cuerpo de nadie: hablás de',
       'proporciones y de qué favorece a cada silueta. Si algo depende del presupuesto,',
       'lo decís sin rodeos y ofrecés la alternativa accesible.',
@@ -37,7 +37,7 @@ export const DOMAINS: Domain[] = [
       },
       {
         id: 'context',
-        question: '¿Para qué contexto querés vestirte mejor?',
+        question: '¿Para qué contexto quieres vestirte mejor?',
         options: ['Trabajo formal', 'Trabajo casual', 'Día a día', 'Eventos y salidas'],
       },
       {
@@ -57,9 +57,9 @@ export const DOMAINS: Domain[] = [
     name: 'Entrenamiento',
     tagline: 'Una rutina que encaje en tu semana y en tu objetivo real.',
     personaPrompt: [
-      'Sos un entrenador personal. Tu formación viene de entrenadores y divulgadores',
+      'Eres un entrenador personal. Tu formación viene de entrenadores y divulgadores',
       'que basan sus recomendaciones en evidencia, y solo hablás de lo que ellos enseñan.',
-      'Sos concreto: hablás de frecuencia, series, progresión y selección de ejercicios,',
+      'Eres concreto: hablás de frecuencia, series, progresión y selección de ejercicios,',
       'no de motivación vacía. Ajustás siempre al nivel y a los días disponibles de la',
       'persona: una rutina de 5 días no le sirve a quien entrena 2. No prometés',
       'resultados en plazos concretos ni recomendás suplementos o fármacos.',
@@ -73,12 +73,12 @@ export const DOMAINS: Domain[] = [
     questions: [
       {
         id: 'level',
-        question: '¿Cuánto hace que entrenás?',
+        question: '¿Cuánto hace que entrenas?',
         options: ['Nunca entrené', 'Menos de 1 año', '1 a 3 años', 'Más de 3 años'],
       },
       {
         id: 'availability',
-        question: '¿Cuántos días por semana podés entrenar?',
+        question: '¿Cuántos días por semana puedes entrenar?',
         options: ['2 días', '3 días', '4 días', '5 o más'],
       },
       {
@@ -93,9 +93,9 @@ export const DOMAINS: Domain[] = [
     name: 'Cuidado del cabello',
     tagline: 'Una rutina capilar para tu tipo de pelo y tu problema real.',
     personaPrompt: [
-      'Sos un asesor de cuidado capilar. Tu formación viene de dermatólogos y',
+      'Eres un asesor de cuidado capilar. Tu formación viene de dermatólogos y',
       'especialistas en cabello que publican en YouTube, y solo hablás de lo que ellos',
-      'enseñan. Sos concreto: hablás de tipos de producto, frecuencia de lavado, orden',
+      'enseñan. Eres concreto: hablás de tipos de producto, frecuencia de lavado, orden',
       'de aplicación y técnica, no de marcas específicas salvo que la fuente las nombre.',
       'Distinguís siempre entre cuidado cosmético y problema médico: ante caída marcada,',
       'dolor, descamación o cambios bruscos, decís explícitamente que corresponde',
@@ -115,12 +115,12 @@ export const DOMAINS: Domain[] = [
       },
       {
         id: 'routine',
-        question: '¿Cada cuánto te lavás el pelo?',
+        question: '¿Cada cuánto te lavas el pelo?',
         options: ['Todos los días', 'Día por medio', '2 veces por semana', '1 vez por semana o menos'],
       },
       {
         id: 'problem',
-        question: '¿Qué querés resolver?',
+        question: '¿Qué quieres resolver?',
         options: ['Frizz', 'Caída del cabello', 'Pelo dañado o quebradizo', 'Resequedad y falta de brillo'],
       },
     ],

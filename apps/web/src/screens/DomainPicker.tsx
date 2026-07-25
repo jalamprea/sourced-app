@@ -10,17 +10,14 @@ export function DomainPicker({ domains, onPick }: Props) {
   return (
     <main className="mx-auto flex min-h-full w-full max-w-3xl flex-col px-6 py-14 sm:px-10">
       <header className="rise">
-        <p className="font-body text-xs tracking-[0.35em] text-muted uppercase">
-          Entrenado con expertos reales
-        </p>
+        <p className="font-body text-xs tracking-[0.35em] text-muted uppercase">Sourced</p>
         <h1 className="mt-6 font-display text-5xl leading-[0.95] sm:text-7xl">
-          Elegí en qué
+          Elige tu
           <br />
-          querés <em className="italic">mejorar</em>.
+          <em className="italic">Coach Experto</em>.
         </h1>
         <p className="mt-6 max-w-md font-body text-[15px] leading-relaxed text-muted">
-          Cada coach se entrena con transcripciones de especialistas en YouTube. Todo lo que te
-          diga va a venir con la fuente y el minuto exacto.
+          Cada coach fue entrenado con contenido real y curado por nuestros especialistas.
         </p>
       </header>
 
@@ -65,6 +62,14 @@ export function DomainPicker({ domains, onPick }: Props) {
           );
         })}
       </ul>
+
+      {/* How it works belongs here, not in the headline: at this point the user is
+          choosing a topic, not evaluating an architecture. */}
+      <footer className="mt-12 max-w-lg font-body text-[11px] leading-relaxed text-muted">
+        Los coaches se entrenan con transcripciones de videos de especialistas. Cada
+        respuesta cita el video y el minuto exacto del que sale, para que puedas
+        verificarla tú mismo.
+      </footer>
     </main>
   );
 }

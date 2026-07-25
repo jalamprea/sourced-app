@@ -164,7 +164,7 @@ export function Compare({ coach, domain, onBack }: Props) {
         <input
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
-          placeholder="Preguntá lo mismo a los dos…"
+          placeholder="Pregunta lo mismo a los dos…"
           disabled={busy}
           className="flex-1 rounded-sm border border-hairline bg-surface px-4 py-3 font-body text-[15px] outline-none transition-colors placeholder:text-muted focus:border-[var(--accent)] disabled:opacity-50"
         />

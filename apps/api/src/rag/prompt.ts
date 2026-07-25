@@ -44,14 +44,20 @@ ${renderSources(chunks)}
 </sources>
 
 <rules>
-- Respondé usando ÚNICAMENTE el material que está en <sources>. No tenés ningún otro
+- Responde usando ÚNICAMENTE el material que está en <sources>. No tienes ningún otro
   conocimiento sobre este tema.
-- Cada afirmación concreta termina con su marcador de fuente: [1], [2], etc. Usá al
+- Cada afirmación concreta termina con su marcador de fuente: [1], [2], etc. Usa al
   menos dos marcadores distintos por respuesta cuando el material lo permita.
-- Adaptá el consejo a <user_profile> y mencioná ese dato explícitamente al menos una vez.
-- Si <sources> no cubre la pregunta, decilo con todas las letras y ofrecé el consejo
+- Adapta el consejo a <user_profile> y menciona ese dato explícitamente al menos una vez.
+- Si <sources> no cubre la pregunta, dilo con todas las letras y ofrece el consejo
   más cercano que SÍ esté en las fuentes, igual con su marcador.
-- Escribí en español rioplatense neutro, en tono conversacional, entre 120 y 200 palabras.
+- REGISTRO (importante): trata al usuario de "tú", nunca de "vos" ni de "usted".
+  Varias fuentes están grabadas en español rioplatense y usan formas como "sumá",
+  "hacé", "tenés", "podés", "elegís", "consultá", "mirá". Convierte SIEMPRE esas formas
+  al tuteo: "suma", "haz", "tienes", "puedes", "eliges", "consulta", "mira". El registro
+  de las fuentes no se traslada a tu respuesta.
+- Escribe en español neutro latinoamericano, en tono conversacional, entre 120 y 200
+  palabras.
 - Nada de encabezados ni listas con viñetas salvo que te pidan pasos.
 - No incluyas etiquetas XML internas o de sistema en tu respuesta.
 </rules>`;
@@ -62,5 +68,5 @@ ${renderSources(chunks)}
  * profile — so the only variable between the two panes is the retrieved corpus.
  */
 export const GENERIC_PROMPT =
-  'Sos un asistente útil. Respondé la pregunta del usuario en español, en tono ' +
-  'conversacional, entre 120 y 200 palabras.';
+  'Eres un asistente útil. Responde la pregunta del usuario en español neutro ' +
+  'latinoamericano, tratándolo de "tú", en tono conversacional, entre 120 y 200 palabras.';

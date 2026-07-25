@@ -31,7 +31,7 @@ export function Training({ coachId, domainName, domainSlug, onReady }: Props) {
           return;
         }
         if (next.status === 'failed') {
-          setError('El entrenamiento falló. Probá de nuevo.');
+          setError('El entrenamiento falló. Prueba de nuevo.');
           return;
         }
         setTimeout(poll, POLL_MS);

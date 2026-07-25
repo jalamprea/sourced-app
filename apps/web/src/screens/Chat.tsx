@@ -136,11 +136,11 @@ export function Chat({ coach, domainName, onReset, onCompare }: Props) {
         {turns.length === 0 && (
           <div className="rise">
             <h2 className="font-display text-3xl leading-tight sm:text-4xl">
-              Preguntame lo que quieras.
+              Pregúntame lo que quieras.
             </h2>
             <p className="mt-3 max-w-md font-body text-sm leading-relaxed text-muted">
               Todo lo que te responda va a venir con la fuente y el minuto exacto del video.
-              Tocá el número para ir directo ahí.
+              Toca el número para ir directo ahí.
             </p>
           </div>
         )}
@@ -184,7 +184,7 @@ export function Chat({ coach, domainName, onReset, onCompare }: Props) {
         <input
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
-          placeholder="Escribí tu pregunta…"
+          placeholder="Escribe tu pregunta…"
           disabled={streaming}
           className="flex-1 rounded-sm border border-hairline bg-surface px-4 py-3 font-body text-[15px] outline-none transition-colors placeholder:text-muted focus:border-[var(--accent)] disabled:opacity-50"
         />
