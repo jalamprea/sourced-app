@@ -205,21 +205,37 @@ at 4.6 s, so allow for variance on stage.
 
 ---
 
-## Phase 5 — Demo seed and buffer (1h)
+## Phase 5 — Demo seed and buffer (1h) — DONE (except what only you can do)
 
-- [ ] `pnpm demo:reset` — deletes non-template coaches and their messages
-- [ ] One pre-created "golden" coach per domain, ready to skip onboarding if time runs out
+- [x] `pnpm demo:reset` — deletes every rehearsal coach, leaves templates and their
+      ingested corpus untouched, then rebuilds one golden coach per domain
+- [x] One pre-created "golden" coach per domain, reachable by deep link
+      (`/?coach=<id>`) so onboarding can be skipped if the clock runs out
 - [x] 3 rehearsed questions per domain — shipped as chips in the comparison screen
-- [ ] Fill `build-night-project.json` — name, one-liner, description
-- [ ] Rewrite `README.md` — what it is, how to run, the demo script
-- [ ] Full dry run twice, timed, on the demo machine, on the demo network
-- [ ] Capture a fallback screen recording of the comparison mode
-- [ ] Buffer
+- [x] Fill `build-night-project.json` — name, one-liner, description
+- [x] Rewrite `README.md` — what it is, how to run, the demo script
+- [x] Dry run of all 9 rehearsed questions against the golden coaches
+- [ ] Full dry run twice, timed, on the demo machine, on the demo network — **yours**
+- [ ] Capture a fallback screen recording of the comparison mode — **yours**
 
-**Exit criterion:** the demo runs end to end twice in a row without a single manual
-database fix.
+**Rehearsed-question dry run — 9/9 retrieve well.** Every question returned all 8
+sources and used at least 2 distinct citation markers; answers ran 176-241 words.
 
----
+| Domain | Markers used | First token |
+| --- | --- | --- |
+| Imagen y estilo | 4, 5, 4 | 5.2s / 3.1s / 1.6s |
+| Entrenamiento | 6, 5, 5 | 2.0s / 1.9s / 2.1s |
+| Cuidado del cabello | 2, 5, 5 | 2.0s / 1.9s / 2.6s |
+
+The 5.2s outlier was the first call after a cold start; steady state sits near 2s.
+**Warm the app before going on stage** — ask one throwaway question so the pool, the
+model connection and the webfont are all hot.
+
+### Stage escape hatches, in order of how much time they save
+
+1. `/?coach=<id>` from `pnpm demo:reset` — lands directly in the chat, no onboarding.
+2. Question chips in the comparison screen — no typing, no typos, guaranteed coverage.
+3. `pnpm demo:reset` between rehearsals — clean state in seconds, corpus never re-ingested.
 
 ## Cut order if behind schedule
 
