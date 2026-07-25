@@ -76,6 +76,22 @@ export const rememberCoach = (domain: string, coachId: string): void => {
   write(store);
 };
 
+/**
+ * Leaving the chat for the home screen: the coach and its conversation stay, but nothing
+ * is open any more. Without this, reloading on the home screen bounced straight back
+ * into the chat — reload should restore where you are, not where you were.
+ */
+export const clearActiveCoach = (): void => {
+  const store = read();
+  delete store.active;
+  write(store);
+  localStorage.removeItem(LEGACY_KEY);
+  // The deep link outranks storage, so it has to go too or it would reopen the chat.
+  if (new URLSearchParams(window.location.search).has('coach')) {
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+};
+
 export const forgetCoach = (domain: string): void => {
   const store = read();
   delete store.byDomain[domain];

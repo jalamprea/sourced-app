@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import type { Coach, DomainSlug, DomainSummary } from '@coach/shared';
 import {
   bootCoachId,
+  clearActiveCoach,
   coachIdFor,
   createCoach,
   forgetCoach,
@@ -109,6 +110,7 @@ export default function App() {
 
   /** Back to the picker with the coach intact — the conversation is still there. */
   const handleHome = useCallback(() => {
+    clearActiveCoach();
     setView('chat');
     setScreen({ name: 'picker' });
   }, []);
