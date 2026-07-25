@@ -96,7 +96,7 @@ export function Chat({ coach, domainName, onReset, onCompare }: Props) {
   return (
     <div
       style={accentVars(coach.domain as DomainSlug)}
-      className="mx-auto flex h-full w-full max-w-2xl flex-col px-5 sm:px-8"
+      className="mx-auto flex h-full w-full max-w-2xl flex-col px-7 sm:px-10"
     >
       <header className="flex items-center justify-between border-b border-hairline py-5">
         <div>

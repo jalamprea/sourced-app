@@ -8,7 +8,7 @@ interface Props {
 
 export function DomainPicker({ domains, onPick }: Props) {
   return (
-    <main className="mx-auto flex min-h-full w-full max-w-3xl flex-col px-6 py-14 sm:px-10">
+    <main className="mx-auto flex min-h-full w-full max-w-3xl flex-col px-7 py-14 sm:px-10">
       <header className="rise">
         <p className="font-body text-xs tracking-[0.35em] text-muted uppercase">Sourced</p>
         <h1 className="mt-6 font-display text-5xl leading-[0.95] sm:text-7xl">
@@ -45,9 +45,12 @@ export function DomainPicker({ domains, onPick }: Props) {
                   </span>
                 </span>
 
+                {/* Inset from the row edge, and the nudge is pointer-only: on touch the
+                    browser fires :hover on tap, which would slide the glyph toward the
+                    screen edge at the exact moment the user is looking at it. */}
                 <span
                   aria-hidden
-                  className="font-body text-2xl text-muted transition-all duration-300 group-hover:translate-x-1 group-hover:text-[var(--accent)]"
+                  className="shrink-0 pr-1 font-body text-2xl text-muted transition-all duration-300 group-hover:text-[var(--accent)] sm:pr-0 sm:group-hover:translate-x-1"
                 >
                   →
                 </span>

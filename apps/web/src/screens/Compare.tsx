@@ -88,7 +88,7 @@ export function Compare({ coach, domain, onBack }: Props) {
   return (
     <div
       style={accentVars(coach.domain as DomainSlug)}
-      className="mx-auto flex h-full w-full max-w-5xl flex-col px-5 sm:px-8"
+      className="mx-auto flex h-full w-full max-w-5xl flex-col px-7 sm:px-10"
     >
       <header className="flex items-center justify-between border-b border-hairline py-5">
         <button

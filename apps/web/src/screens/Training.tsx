@@ -53,7 +53,7 @@ export function Training({ coachId, domainName, domainSlug, onReady }: Props) {
   return (
     <main
       style={accentVars(domainSlug)}
-      className="mx-auto flex min-h-full w-full max-w-2xl flex-col px-6 py-14 sm:px-10"
+      className="mx-auto flex min-h-full w-full max-w-2xl flex-col px-7 py-14 sm:px-10"
     >
       <p className="font-body text-xs tracking-[0.35em] text-muted uppercase">{domainName}</p>
 

@@ -34,7 +34,7 @@ export function ProfileQuestions({ domain, onComplete, onBack }: Props) {
   return (
     <main
       style={accentVars(domain.slug as DomainSlug)}
-      className="mx-auto flex min-h-full w-full max-w-2xl flex-col px-6 py-10 sm:px-10"
+      className="mx-auto flex min-h-full w-full max-w-2xl flex-col px-7 py-10 sm:px-10"
     >
       <div className="flex items-center gap-4">
         <button

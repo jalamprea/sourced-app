@@ -29,6 +29,18 @@ body {
   color: var(--color-paper);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
+  /* Any stray overflow shifts the whole page sideways and eats the right margin,
+     which reads as "the design is off-centre" rather than as a scrollbar. */
+  overflow-x: hidden;
+}
+
+/* index.html sets viewport-fit=cover so the dark canvas reaches the screen edges on
+   notched phones. That opt-in also moves content under the rounded corners unless the
+   safe-area insets are added back — which is what made the right margin look thinner
+   than the left. Applied once here instead of on every screen. */
+#root {
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
 }
 
 /* Film grain: keeps large flat dark areas from looking like dead pixels on a projector. */
