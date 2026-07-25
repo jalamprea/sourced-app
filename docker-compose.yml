@@ -1,0 +1,23 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: coachtube-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: coach
+      POSTGRES_PASSWORD: coach
+      POSTGRES_DB: coach
+    ports:
+      - '5432:5432'
+    volumes:
+      - coach_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      # Query the real database — pg_isready also passes against the temporary
+      # server the entrypoint runs during first-boot initialization.
+      test: ['CMD-SHELL', 'psql -U coach -d coach -c "select 1" || exit 1']
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  coach_pgdata:
