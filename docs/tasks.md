@@ -231,6 +231,16 @@ The 5.2s outlier was the first call after a cold start; steady state sits near 2
 **Warm the app before going on stage** — ask one throwaway question so the pool, the
 model connection and the webfont are all hot.
 
+### Answer to have ready on stage
+
+**"Where do those ratings come from?"** — `pnpm demo:reset` seeds the `ratings` table
+(style 4.5/12, fitness 4.5/13, hair 4.7/10). The rating system is real: the score shown
+is the live aggregate of whatever is in the database, one vote per coach enforced by a
+unique index, and rating during the demo moves the number on the home screen. The seed
+rows are demo data. Say that plainly if asked — the product's whole claim is verifiable
+sourcing, so this is the one screen where a vague answer would cost more than the
+feature is worth.
+
 ### Stage escape hatches, in order of how much time they save
 
 1. `/?coach=<id>` from `pnpm demo:reset` — lands directly in the chat, no onboarding.

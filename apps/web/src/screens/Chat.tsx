@@ -1,9 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { Citation, Coach, DomainSlug } from '@coach/shared';
-import { getMessages } from '../api.ts';
+import { getMessages, rateCoach } from '../api.ts';
 import { openChatStream, readSSE } from '../sse.ts';
 import { accentVars } from '../theme.ts';
 import { CitedText } from '../components/CitedText.tsx';
+import { ChatMenu } from '../components/ChatMenu.tsx';
+import { Dialog } from '../components/Dialog.tsx';
+import { Stars } from '../components/Stars.tsx';
 import { SourceCards } from '../components/SourceCards.tsx';
 
 interface Turn {
@@ -15,6 +18,9 @@ interface Turn {
 interface Props {
   coach: Coach;
   domainName: string;
+  /** Back to the picker, conversation intact. */
+  onHome: () => void;
+  /** Drops this coach and its conversation for good. */
   onReset: () => void;
   onCompare: () => void;
 }
@@ -25,11 +31,13 @@ const usedMarkers = (text: string): Set<number> => {
   return used;
 };
 
-export function Chat({ coach, domainName, onReset, onCompare }: Props) {
+export function Chat({ coach, domainName, onHome, onReset, onCompare }: Props) {
   const [turns, setTurns] = useState<Turn[]>([]);
   const [draft, setDraft] = useState('');
   const [streaming, setStreaming] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [dialog, setDialog] = useState<'none' | 'rate' | 'reset'>('none');
+  const [rated, setRated] = useState<number | null>(null);
   const bottom = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -98,30 +106,27 @@ export function Chat({ coach, domainName, onReset, onCompare }: Props) {
       style={accentVars(coach.domain as DomainSlug)}
       className="mx-auto flex h-full w-full max-w-2xl flex-col px-7 sm:px-10"
     >
-      <header className="flex items-center justify-between border-b border-hairline py-5">
-        <div>
-          <p className="font-body text-[10px] tracking-[0.3em] text-muted uppercase">
-            Tu coach de
-          </p>
-          <h1 className="font-display text-2xl leading-tight">
+      <header className="flex items-center justify-between gap-3 border-b border-hairline py-5">
+        <div className="min-w-0">
+          {/* Home keeps the coach: the conversation is still here when you come back. */}
+          <button
+            type="button"
+            onClick={onHome}
+            className="font-body text-[10px] tracking-[0.3em] text-muted uppercase transition-colors hover:text-paper"
+          >
+            ← Sourced
+          </button>
+          <h1 className="truncate font-display text-2xl leading-tight">
             {domainName}
             <span className="text-[var(--accent)]">.</span>
           </h1>
         </div>
-        <div className="flex items-center gap-4">
-          <div className="text-right">
-            <p className="font-body text-[11px] tabular-nums text-muted">
-              {coach.videosReady} videos ·{' '}
-              {new Set(coach.videos.map((v) => v.channel)).size} fuentes
-            </p>
-            <button
-              type="button"
-              onClick={onReset}
-              className="mt-1 font-body text-[11px] text-muted underline underline-offset-4 transition-colors hover:text-paper"
-            >
-              Empezar de nuevo
-            </button>
-          </div>
+
+        <div className="flex shrink-0 items-center gap-3">
+          <p className="hidden font-body text-[11px] tabular-nums text-muted sm:block">
+            {coach.videosReady} videos · {new Set(coach.videos.map((v) => v.channel)).size}{' '}
+            fuentes
+          </p>
           <button
             type="button"
             onClick={onCompare}
@@ -171,6 +176,7 @@ export function Chat({ coach, domainName, onReset, onCompare }: Props) {
         </ul>
 
         {error && <p className="mt-6 font-body text-sm text-style">{error}</p>}
+
         <div ref={bottom} />
       </div>
 
@@ -195,7 +201,62 @@ export function Chat({ coach, domainName, onReset, onCompare }: Props) {
         >
           {streaming ? '…' : 'Enviar'}
         </button>
+        <ChatMenu onRate={() => setDialog('rate')} onReset={() => setDialog('reset')} />
       </form>
+
+      {dialog === 'rate' && (
+        <Dialog title="¿Qué tal tu coach?" onClose={() => setDialog('none')}>
+          <p className="mt-3 font-body text-sm leading-relaxed text-muted">
+            Tu calificación se suma a la de las demás personas que usaron el coach de{' '}
+            {domainName.toLowerCase()}.
+          </p>
+
+          <div className="mt-6 flex justify-center">
+            <Stars
+              value={rated ?? 0}
+              onPick={(stars) => {
+                setRated(stars);
+                // Optimistic: the score is not worth blocking the dialog on.
+                void rateCoach(coach.id, stars).catch(() => undefined);
+                setTimeout(() => setDialog('none'), 600);
+              }}
+            />
+          </div>
+
+          {rated !== null && (
+            <p className="mt-5 text-center font-body text-sm text-[var(--accent)]">
+              ¡Gracias por calificar!
+            </p>
+          )}
+        </Dialog>
+      )}
+
+      {dialog === 'reset' && (
+        <Dialog title="¿Seguro que quieres resetear?" onClose={() => setDialog('none')}>
+          <p className="mt-3 font-body text-sm leading-relaxed text-muted">
+            Se borra este coach y toda la conversación que llevas con él. El contexto que
+            construiste se pierde y tendrás que responder las preguntas de perfil otra vez.
+            No se puede deshacer.
+          </p>
+
+          <div className="mt-6 flex gap-2">
+            <button
+              type="button"
+              onClick={() => setDialog('none')}
+              className="flex-1 rounded-sm border border-hairline px-4 py-3 font-body text-sm transition-colors hover:border-paper"
+            >
+              Cancelar
+            </button>
+            <button
+              type="button"
+              onClick={onReset}
+              className="flex-1 rounded-sm bg-style px-4 py-3 font-body text-sm font-bold text-ink transition-opacity hover:opacity-90"
+            >
+              Sí, resetear
+            </button>
+          </div>
+        </Dialog>
+      )}
     </div>
   );
 }

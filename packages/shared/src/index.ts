@@ -16,6 +16,12 @@ export interface ProfileQuestion {
   options: string[];
 }
 
+export interface Rating {
+  /** Mean stars, rounded to one decimal. 0 when nobody has rated yet. */
+  average: number;
+  count: number;
+}
+
 export interface DomainSummary {
   slug: DomainSlug;
   name: string;
@@ -23,6 +29,7 @@ export interface DomainSummary {
   questions: ProfileQuestion[];
   /** Verified to retrieve well — these are the rehearsed demo questions. */
   sampleQuestions: string[];
+  rating: Rating;
 }
 
 export interface CoachVideo {

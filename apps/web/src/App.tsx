@@ -1,6 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
 import type { Coach, DomainSlug, DomainSummary } from '@coach/shared';
-import { clearCoachId, createCoach, getCoach, listDomains, storeCoachId, storedCoachId } from './api.ts';
+import {
+  bootCoachId,
+  coachIdFor,
+  createCoach,
+  forgetCoach,
+  getCoach,
+  listDomains,
+  rememberCoach,
+} from './api.ts';
 import { DomainPicker } from './screens/DomainPicker.tsx';
 import { ProfileQuestions } from './screens/ProfileQuestions.tsx';
 import { Training } from './screens/Training.tsx';
@@ -20,9 +28,30 @@ export default function App() {
   const [view, setView] = useState<'chat' | 'compare'>('chat');
   const [error, setError] = useState<string | null>(null);
 
-  // Boot: load the catalog, then resume an existing coach from localStorage if it
-  // still exists server-side. A stale id (database reset between runs) falls back to
-  // the picker instead of dead-ending.
+  /** Open a coach that already exists, or fall back to the picker if it is gone. */
+  const openCoach = useCallback(
+    async (coachId: string, catalog: DomainSummary[]): Promise<boolean> => {
+      try {
+        const coach = await getCoach(coachId);
+        const domain = catalog.find((d) => d.slug === coach.domain);
+        if (!domain) return false;
+
+        // Normalises deep links and the old single-id storage into the per-domain store.
+        rememberCoach(coach.domain, coach.id);
+        setView('chat');
+        setScreen(
+          coach.status === 'ready'
+            ? { name: 'ready', coach, domain }
+            : { name: 'training', coachId: coach.id, domain },
+        );
+        return true;
+      } catch {
+        return false;
+      }
+    },
+    [],
+  );
+
   useEffect(() => {
     let cancelled = false;
 
@@ -32,27 +61,15 @@ export default function App() {
         if (cancelled) return;
         setDomains(catalog);
 
-        const saved = storedCoachId();
+        const saved = bootCoachId();
         if (!saved) {
           setScreen({ name: 'picker' });
           return;
         }
 
-        try {
-          const coach = await getCoach(saved);
-          const domain = catalog.find((d) => d.slug === coach.domain);
-          if (!domain) throw new Error('dominio desconocido');
-          if (cancelled) return;
-
-          setScreen(
-            coach.status === 'ready'
-              ? { name: 'ready', coach, domain }
-              : { name: 'training', coachId: coach.id, domain },
-          );
-        } catch {
-          clearCoachId();
-          if (!cancelled) setScreen({ name: 'picker' });
-        }
+        // A stale id (the database was reset between runs) must not dead-end the app.
+        const opened = await openCoach(saved, catalog);
+        if (!cancelled && !opened) setScreen({ name: 'picker' });
       } catch (err) {
         if (!cancelled) setError((err as Error).message);
       }
@@ -61,13 +78,24 @@ export default function App() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [openCoach]);
+
+  /** Tapping a domain resumes its coach when there is one; otherwise it starts onboarding. */
+  const handlePick = useCallback(
+    async (domain: DomainSummary) => {
+      const existing = coachIdFor(domain.slug);
+      if (existing && (await openCoach(existing, domains))) return;
+      if (existing) forgetCoach(domain.slug);
+      setScreen({ name: 'questions', domain });
+    },
+    [domains, openCoach],
+  );
 
   const handleComplete = useCallback(
     async (domain: DomainSummary, answers: Record<string, string>) => {
       try {
         const coach = await createCoach(domain.slug, answers);
-        storeCoachId(coach.id);
+        rememberCoach(domain.slug, coach.id);
         setScreen({ name: 'training', coachId: coach.id, domain });
       } catch (err) {
         setError((err as Error).message);
@@ -76,8 +104,16 @@ export default function App() {
     [],
   );
 
-  const handleReset = useCallback(() => {
-    clearCoachId();
+  /** Back to the picker with the coach intact — the conversation is still there. */
+  const handleHome = useCallback(() => {
+    setView('chat');
+    setScreen({ name: 'picker' });
+  }, []);
+
+  /** The destructive one: drops this domain's coach and its conversation. */
+  const handleReset = useCallback((domain: DomainSummary) => {
+    forgetCoach(domain.slug);
+    setView('chat');
     setScreen({ name: 'picker' });
   }, []);
 
@@ -110,12 +146,7 @@ export default function App() {
       );
 
     case 'picker':
-      return (
-        <DomainPicker
-          domains={domains}
-          onPick={(domain) => setScreen({ name: 'questions', domain })}
-        />
-      );
+      return <DomainPicker domains={domains} onPick={(d) => void handlePick(d)} />;
 
     case 'questions':
       return (
@@ -138,16 +169,13 @@ export default function App() {
 
     case 'ready':
       return view === 'compare' ? (
-        <Compare
-          coach={screen.coach}
-          domain={screen.domain}
-          onBack={() => setView('chat')}
-        />
+        <Compare coach={screen.coach} domain={screen.domain} onBack={() => setView('chat')} />
       ) : (
         <Chat
           coach={screen.coach}
           domainName={screen.domain.name}
-          onReset={handleReset}
+          onHome={handleHome}
+          onReset={() => handleReset(screen.domain)}
           onCompare={() => setView('compare')}
         />
       );

@@ -1,4 +1,6 @@
 import type { DomainSlug, DomainSummary } from '@coach/shared';
+import { coachIdFor } from '../api.ts';
+import { Stars } from '../components/Stars.tsx';
 import { ACCENT } from '../theme.ts';
 
 interface Props {
@@ -24,6 +26,8 @@ export function DomainPicker({ domains, onPick }: Props) {
       <ul className="mt-14 flex flex-col">
         {domains.map((domain, index) => {
           const accent = ACCENT[domain.slug as DomainSlug];
+          // Read at render: always current, and no state to keep in sync with storage.
+          const started = coachIdFor(domain.slug) !== null;
           return (
             <li key={domain.slug} className="rise" style={{ animationDelay: `${120 + index * 90}ms` }}>
               <button
@@ -41,9 +45,28 @@ export function DomainPicker({ domains, onPick }: Props) {
                     {domain.name}
                   </span>
                   <span className="mt-2 block max-w-sm font-body text-sm leading-relaxed text-muted">
-                    {domain.tagline}
+                    {started ? 'Continuar tu conversación' : domain.tagline}
                   </span>
+
+                  {domain.rating.count > 0 && (
+                    <span
+                      className="mt-2.5 flex items-center gap-2"
+                      style={{ '--accent': accent } as React.CSSProperties}
+                    >
+                      <Stars value={domain.rating.average} />
+                      <span className="font-body text-[11px] tabular-nums text-muted">
+                        {domain.rating.average.toFixed(1)} · {domain.rating.count}{' '}
+                        {domain.rating.count === 1 ? 'calificación' : 'calificaciones'}
+                      </span>
+                    </span>
+                  )}
                 </span>
+
+                {started && (
+                  <span className="shrink-0 self-center rounded-full bg-[var(--accent)] px-2 py-0.5 font-body text-[10px] font-bold tracking-wide text-[var(--on-accent)] uppercase">
+                    Activo
+                  </span>
+                )}
 
                 {/* Inset from the row edge, and the nudge is pointer-only: on touch the
                     browser fires :hover on tap, which would slide the glyph toward the

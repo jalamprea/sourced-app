@@ -21,14 +21,60 @@ const CoachStateResponse = Type.Object({
 const ErrorResponse = Type.Object({ message: Type.String() });
 
 export async function coachRoutes(app: FastifyInstance): Promise<void> {
-  app.get('/api/domains', async () =>
-    DOMAINS.map((d) => ({
-      slug: d.slug,
-      name: d.name,
-      tagline: d.tagline,
-      questions: d.questions,
-      sampleQuestions: d.sampleQuestions,
-    })),
+  app.get('/api/domains', async () => {
+    const { rows } = await pool.query<{ domain: string; average: string; count: string }>(
+      `select domain,
+              round(avg(stars)::numeric, 1)::text as average,
+              count(*)::text as count
+         from ratings group by domain`,
+    );
+    const byDomain = new Map(rows.map((r) => [r.domain, r]));
+
+    return DOMAINS.map((d) => {
+      const rating = byDomain.get(d.slug);
+      return {
+        slug: d.slug,
+        name: d.name,
+        tagline: d.tagline,
+        questions: d.questions,
+        sampleQuestions: d.sampleQuestions,
+        rating: {
+          average: rating ? Number(rating.average) : 0,
+          count: rating ? Number(rating.count) : 0,
+        },
+      };
+    });
+  });
+
+  app.post(
+    '/api/coaches/:id/rating',
+    {
+      schema: {
+        body: Type.Object({ stars: Type.Integer({ minimum: 1, maximum: 5 }) }),
+        response: { 200: Type.Object({ ok: Type.Boolean() }), 404: ErrorResponse },
+      },
+    },
+    async (request, reply) => {
+      const { id } = request.params as { id: string };
+      const { stars } = request.body as { stars: number };
+
+      const { rows } = await pool.query<{ domain: string }>(
+        'select domain from coaches where id = $1',
+        [id],
+      );
+      const coach = rows[0];
+      if (!coach) return reply.code(404).send({ message: 'coach no encontrado' });
+
+      // One opinion per coach: rating again replaces the previous score.
+      await pool.query(
+        `insert into ratings (domain, coach_id, stars) values ($1, $2, $3)
+         on conflict (coach_id) where coach_id is not null
+         do update set stars = excluded.stars, created_at = now()`,
+        [coach.domain, id, stars],
+      );
+
+      return { ok: true };
+    },
   );
 
   app.post(

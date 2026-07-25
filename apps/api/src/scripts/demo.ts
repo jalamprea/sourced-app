@@ -64,6 +64,27 @@ try {
     console.log(links.join('\n'));
   }
 
+  // Seeded so the home screen is not empty on stage. These are demo rows in the same
+  // table real ratings land in — not a hardcoded number in the UI — so the score shown
+  // is always the real aggregate of whatever the database holds. Say so if asked.
+  await pool.query(`delete from ratings where coach_id is null`);
+  const seed: Record<string, number[]> = {
+    style: [5, 5, 4, 5, 4, 5, 3, 4, 5, 5, 4, 5],
+    fitness: [5, 4, 5, 5, 5, 4, 4, 5, 5, 3, 5, 4, 5],
+    hair: [5, 5, 5, 4, 5, 4, 5, 5, 4, 5],
+  };
+  for (const [domain, stars] of Object.entries(seed)) {
+    for (const value of stars) {
+      await pool.query('insert into ratings (domain, stars) values ($1, $2)', [domain, value]);
+    }
+  }
+  const { rows: scores } = await pool.query<{ domain: string; avg: string; n: string }>(
+    `select domain, round(avg(stars)::numeric,1)::text as avg, count(*)::text as n
+       from ratings group by domain order by domain`,
+  );
+  console.log('\ncalificaciones sembradas (demo):');
+  for (const s of scores) console.log(`  ${s.domain.padEnd(8)} ${s.avg} ★  (${s.n})`);
+
   console.log('\npreguntas ensayadas por dominio:\n');
   for (const domain of DOMAINS) {
     console.log(`  ${domain.name}`);
