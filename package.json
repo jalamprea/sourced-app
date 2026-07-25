@@ -13,7 +13,8 @@
     "db:reset": "docker compose down -v && docker compose up -d",
     "db:migrate": "./scripts/migrate.sh",
     "db:psql": "docker compose exec db psql -U coach -d coach",
-    "ingest": "pnpm --filter api ingest"
+    "ingest": "pnpm --filter api ingest",
+    "demo:reset": "pnpm --filter api demo:reset"
   },
   "devDependencies": {
     "concurrently": "^10.0.3"

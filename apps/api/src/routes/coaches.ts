@@ -2,19 +2,7 @@ import { Type } from '@sinclair/typebox';
 import type { FastifyInstance } from 'fastify';
 import { pool } from '../db.ts';
 import { DOMAINS, getDomain } from '../personas.ts';
-
-/**
- * Presentation pacing for the training screen, not compute time.
- *
- * Cloning a template coach is genuinely real work — it copies every video and chunk row
- * to the new coach — but it finishes in well under a second, which would make the
- * onboarding screen flash past. Each video is committed on its own and spaced by this
- * delay so the user watches real titles land one by one. The rows, the titles and the
- * counts are all real; only the spacing is for the demo.
- */
-const CLONE_PACING_MS = 550;
-
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+import { cloneCorpus, templateCoachId } from '../coach/clone.ts';
 
 const CreateCoachBody = Type.Object({
   domain: Type.Union(DOMAINS.map((d) => Type.Literal(d.slug))),
@@ -31,54 +19,6 @@ const CoachStateResponse = Type.Object({
 });
 
 const ErrorResponse = Type.Object({ message: Type.String() });
-
-async function templateCoachId(domain: string): Promise<string | null> {
-  const { rows } = await pool.query<{ id: string }>(
-    `select id from coaches where domain = $1 and status = 'template'`,
-    [domain],
-  );
-  return rows[0]?.id ?? null;
-}
-
-/**
- * Copy the domain's corpus onto the freshly created coach, one video at a time so
- * `videosReady` climbs while the user watches. Runs detached from the request.
- */
-async function cloneCorpus(coachId: string, templateId: string): Promise<void> {
-  const { rows: sourceVideos } = await pool.query<{ id: string }>(
-    'select id from videos where coach_id = $1 order by created_at, id',
-    [templateId],
-  );
-
-  for (const source of sourceVideos) {
-    const client = await pool.connect();
-    try {
-      await client.query('begin');
-      const inserted = await client.query<{ id: string }>(
-        `insert into videos (coach_id, youtube_id, title, channel, url)
-         select $1, youtube_id, title, channel, url from videos where id = $2
-         returning id`,
-        [coachId, source.id],
-      );
-      const newVideoId = inserted.rows[0]!.id;
-      await client.query(
-        `insert into chunks (video_id, text, start_seconds, embedding)
-         select $1, text, start_seconds, embedding from chunks where video_id = $2`,
-        [newVideoId, source.id],
-      );
-      await client.query('commit');
-    } catch (err) {
-      await client.query('rollback');
-      throw err;
-    } finally {
-      client.release();
-    }
-
-    await sleep(CLONE_PACING_MS);
-  }
-
-  await pool.query(`update coaches set status = 'ready' where id = $1`, [coachId]);
-}
 
 export async function coachRoutes(app: FastifyInstance): Promise<void> {
   app.get('/api/domains', async () =>

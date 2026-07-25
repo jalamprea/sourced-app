@@ -1,7 +1,8 @@
 import type { ChatMessage, Coach, DomainSummary } from '@coach/shared';
+import { apiUrl } from './config.ts';
 
-async function json<T>(input: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(input, {
+async function json<T>(path: string, init?: RequestInit): Promise<T> {
+  const response = await fetch(apiUrl(path), {
     ...init,
     headers: { 'content-type': 'application/json', ...init?.headers },
   });
@@ -26,6 +27,23 @@ export const createCoach = (domain: string, userProfile: Record<string, string>)
 
 const STORAGE_KEY = 'coachId';
 
-export const storedCoachId = () => localStorage.getItem(STORAGE_KEY);
+/**
+ * `?coach=<id>` wins over localStorage: it is the stage escape hatch, letting a golden
+ * coach be opened directly if the clock runs out before onboarding can be shown.
+ */
+export const storedCoachId = () => {
+  const fromUrl = new URLSearchParams(window.location.search).get('coach');
+  if (fromUrl) {
+    localStorage.setItem(STORAGE_KEY, fromUrl);
+    return fromUrl;
+  }
+  return localStorage.getItem(STORAGE_KEY);
+};
 export const storeCoachId = (id: string) => localStorage.setItem(STORAGE_KEY, id);
-export const clearCoachId = () => localStorage.removeItem(STORAGE_KEY);
+export const clearCoachId = () => {
+  localStorage.removeItem(STORAGE_KEY);
+  // Otherwise the deep link would immediately restore the coach we just cleared.
+  if (new URLSearchParams(window.location.search).has('coach')) {
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+};
