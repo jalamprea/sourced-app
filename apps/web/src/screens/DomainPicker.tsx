@@ -7,9 +7,10 @@ import { ACCENT } from '../theme.ts';
 interface Props {
   domains: DomainSummary[];
   onPick: (domain: DomainSummary) => void;
+  onAbout: () => void;
 }
 
-export function DomainPicker({ domains, onPick }: Props) {
+export function DomainPicker({ domains, onPick, onAbout }: Props) {
   return (
     <main className="mx-auto flex min-h-full w-full max-w-3xl flex-col px-7 py-14 sm:px-10">
       <header className="rise">
@@ -45,15 +46,21 @@ export function DomainPicker({ domains, onPick }: Props) {
                   <span className="block font-display text-3xl leading-tight transition-colors group-hover:text-[var(--accent)] sm:text-4xl">
                     {domain.name}
                   </span>
-                  <span className="mt-2 block max-w-sm font-body text-sm leading-relaxed text-muted">
-                    {started ? 'Continuar tu conversación' : domain.tagline}
+                  {/* Inline rather than a pill floating between the text and the arrow:
+                      in a baseline-aligned row a free-standing block has nothing to sit
+                      against, so it read as detached from the entry it belongs to. */}
+                  <span className="mt-2 flex max-w-sm flex-wrap items-center gap-x-2 gap-y-1 font-body text-sm leading-relaxed text-muted">
+                    {started && (
+                      <span className="inline-flex items-center gap-1.5 font-bold text-[var(--accent)]">
+                        <span className="size-1.5 rounded-full bg-[var(--accent)]" />
+                        Activo
+                      </span>
+                    )}
+                    <span>{started ? 'Continuar tu conversación' : domain.tagline}</span>
                   </span>
 
                   {domain.rating.count > 0 && (
-                    <span
-                      className="mt-2.5 flex items-center gap-2"
-                      style={{ '--accent': accent } as React.CSSProperties}
-                    >
+                    <span className="mt-2.5 flex items-center gap-2">
                       <Stars value={domain.rating.average} />
                       <span className="font-body text-[11px] tabular-nums text-muted">
                         {domain.rating.average.toFixed(1)} · {domain.rating.count}{' '}
@@ -62,12 +69,6 @@ export function DomainPicker({ domains, onPick }: Props) {
                     </span>
                   )}
                 </span>
-
-                {started && (
-                  <span className="shrink-0 self-center rounded-full bg-[var(--accent)] px-2 py-0.5 font-body text-[10px] font-bold tracking-wide text-[var(--on-accent)] uppercase">
-                    Activo
-                  </span>
-                )}
 
                 {/* Inset from the row edge, and the nudge is pointer-only: on touch the
                     browser fires :hover on tap, which would slide the glyph toward the
@@ -92,12 +93,19 @@ export function DomainPicker({ domains, onPick }: Props) {
 
       <RequestCoach />
 
-      {/* How it works belongs here, not in the headline: at this point the user is
-          choosing a topic, not evaluating an architecture. */}
-      <footer className="mt-12 max-w-lg font-body text-[11px] leading-relaxed text-muted">
-        Los coaches se entrenan con transcripciones de videos de especialistas. Cada
-        respuesta cita el video y el minuto exacto del que sale, para que puedas
-        verificarla tú mismo.
+      {/* The explanation moved to its own page: at this point the user is choosing a
+          topic, not evaluating an architecture. */}
+      <footer className="mt-16 flex flex-wrap items-center justify-between gap-4 border-t border-hairline pt-8 pb-4">
+        <button
+          type="button"
+          onClick={onAbout}
+          className="font-body text-sm underline underline-offset-4 transition-colors hover:text-muted"
+        >
+          Acerca de Sourced
+        </button>
+        <span className="font-body text-[11px] text-muted">
+          Cada respuesta cita su fuente y el minuto exacto.
+        </span>
       </footer>
     </main>
   );
